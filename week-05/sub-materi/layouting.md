@@ -1,20 +1,7 @@
-
-```markdown
 #  Layouting dengan Jetpack Compose: ConstraintLayout
 
 Jetpack Compose menyediakan `ConstraintLayout` untuk membuat layout yang fleksibel dan kompleks dengan pendekatan deklaratif.
 
----
-
-##  Menambahkan Dependency
-
-Tambahkan dependency berikut pada file `build.gradle(:app)`:
-
-```kotlin
-dependencies {
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-}
-```
 
 ---
 
@@ -145,63 +132,6 @@ fun HorizontalChainLayout() {
 - `ChainStyle.Spread`: elemen tersebar merata
 - `ChainStyle.SpreadInside`: elemen tersebar tapi tidak menyentuh ujung
 - `ChainStyle.Packed`: elemen berhimpit
-
----
-
-##  Bias
-
-Gunakan `horizontalBias` dan `verticalBias` untuk mengatur posisi relatif antar dua constraint.
-
-```kotlin
-@Composable
-fun BiasExample() {
-    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val box = createRef()
-
-        Box(
-            modifier = Modifier
-                .size(100.dp)
-                .background(Color.Magenta)
-                .constrainAs(box) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    horizontalBias = 0.3f
-                    verticalBias = 0.7f
-                }
-        )
-    }
-}
-```
-
-- Bias bernilai 0.0 (start/top) sampai 1.0 (end/bottom)
-
----
-
-##  Dimension
-
-Gunakan `Dimension.*` untuk mengatur ukuran berdasarkan constraint:
-
-```kotlin
-Text(
-    "Text yang lebar mengikuti constraint",
-    modifier = Modifier
-        .background(Color.LightGray)
-        .constrainAs(text) {
-            start.linkTo(parent.start, margin = 16.dp)
-            end.linkTo(parent.end, margin = 16.dp)
-            width = Dimension.fillToConstraints
-        }
-)
-```
-
-Pilihan `Dimension`:
-
-- `wrapContent`
-- `fillToConstraints`
-- `preferredWrapContent`
-- `value(dp)` (ukuran tetap)
 
 ---
 
