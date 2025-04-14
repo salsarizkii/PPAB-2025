@@ -1,13 +1,33 @@
+
 #  Layouting dengan Jetpack Compose: ConstraintLayout
 
 Jetpack Compose menyediakan `ConstraintLayout` untuk membuat layout yang fleksibel dan kompleks dengan pendekatan deklaratif.
 
+---
+
+##  Menambahkan Dependency
+
+Tambahkan dependency berikut pada file `build.gradle(:app)`:
+
+```kotlin
+dependencies {
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+}
+```
 
 ---
 
 ##  Dasar ConstraintLayout
 
-Gunakan `ConstraintLayout` dengan `createRefs()` dan `constrainAs()` untuk mengatur posisi komponen berdasarkan constraint.
+`ConstraintLayout` memungkinkan kita mengatur posisi setiap elemen secara relatif terhadap elemen lain atau `parent`. Ini sangat berguna untuk layout kompleks yang tidak bisa ditangani dengan `Column` dan `Row`.
+
+Konsep utamanya:
+
+- `createRefs()` digunakan untuk mendapatkan referensi ke setiap komponen.
+- `constrainAs()` dipakai untuk menetapkan constraint ke setiap elemen.
+- Kita bisa menetapkan hubungan seperti `top.linkTo()`, `bottom.linkTo()`, `start.linkTo()`, dan `end.linkTo()`.
+
+Contoh dasar:
 
 ```kotlin
 @Composable
@@ -40,11 +60,25 @@ fun BasicConstraintLayout() {
 }
 ```
 
+> Layout ini akan menempatkan tombol di tengah atas layar, lalu teks berada di bawah tombol secara sejajar.
+
 ---
 
 ##  Barrier
 
-`Barrier` digunakan untuk membuat batas berdasarkan beberapa elemen.
+`Barrier` digunakan untuk membuat garis virtual berdasarkan batas beberapa komponen, dan dapat digunakan sebagai anchor untuk elemen lain.
+
+### Kegunaan:
+
+- Menyusun elemen secara dinamis saat ukuran elemen tidak pasti.
+- Menentukan batas berdasarkan sisi **terluar** dari beberapa elemen.
+- Dapat dibuat dari sisi `start`, `end`, `top`, atau `bottom`.
+
+```kotlin
+val barrier = createEndBarrier(button1, button2)
+```
+
+Contoh implementasi:
 
 ```kotlin
 @Composable
@@ -85,11 +119,27 @@ fun ConstraintWithBarrier() {
 }
 ```
 
+> Teks akan diletakkan di sebelah kanan tombol yang paling kanan, meskipun tombol berbeda ukuran.
+
 ---
 
 ##  Chain Layout
 
-Gunakan `createHorizontalChain` atau `createVerticalChain` untuk menyusun elemen secara fleksibel.
+`Chain` adalah fitur yang digunakan untuk mengelompokkan beberapa elemen agar diatur secara horizontal atau vertikal dalam satu baris atau kolom dengan pengaturan fleksibel.
+
+### Kegunaan:
+
+- Untuk membuat layout yang rapi, tersusun, dan *auto distribute*.
+- Chain bisa dikombinasikan dengan `bias` dan `weight` (melalui `Modifier.weight` jika memakai layout biasa).
+- Memiliki beberapa jenis gaya distribusi (`ChainStyle`).
+
+### Jenis ChainStyle:
+
+- `Spread`: elemen tersebar merata
+- `SpreadInside`: elemen tersebar tapi tidak menyentuh tepi parent
+- `Packed`: elemen dikumpulkan di tengah, bisa disesuaikan dengan bias
+
+Contoh implementasi:
 
 ```kotlin
 @Composable
@@ -129,15 +179,12 @@ fun HorizontalChainLayout() {
 }
 ```
 
-- `ChainStyle.Spread`: elemen tersebar merata
-- `ChainStyle.SpreadInside`: elemen tersebar tapi tidak menyentuh ujung
-- `ChainStyle.Packed`: elemen berhimpit
+> Dengan `ChainStyle.Spread`, ketiga box akan tersebar merata di sepanjang lebar layar.
 
 ---
 
 ## 🔗 Referensi
 
 - [ConstraintLayout - Jetpack Compose (Android Developers)](https://developer.android.com/develop/ui/compose/layouts/constraintlayout?hl=id)
-- [Kode sumber contoh Compose ConstraintLayout](https://github.com/androidx/compose-samples)
-
+- [Kode sumber Compose ConstraintLayout](https://github.com/androidx/compose-samples)
 ```
